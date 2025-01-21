@@ -66,3 +66,38 @@ public class Maquina {
         productos[6][4] = new Producto("Ensalada Fresca", 4.5, 6, CATEGORIAS[6]);
 
     }
+    // Verificar si existe un producto por nombre
+    public boolean verificarNombre(String productName) {
+        for (Producto[] fila : productos) {
+            for (Producto producto : fila) {
+                if (producto.getNombre().equalsIgnoreCase(productName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // Intentar comprar un producto
+    public String comprarProducto(String nombre, double dineroIngresado) {
+        for (Producto[] fila : productos) {
+            for (Producto producto : fila) {
+                if (producto.getNombre().equalsIgnoreCase(nombre)) {
+                    if (producto.getStockRestante() > 0) {
+                        if (dineroIngresado >= producto.getPrecio()) {
+                            double cambio = dineroIngresado - producto.getPrecio();
+                            producto.setStockRestante(producto.getStockRestante() - 1);
+                            return "COMPRA_EXITOSA," + producto.getNombre() + "," + cambio;
+                        } else {
+                            return "DINERO_INSUFICIENTE," + (producto.getPrecio() - dineroIngresado);
+                        }
+                    } else {
+                        return "PRODUCTO_AGOTADO";
+                    }
+                }
+            }
+        }
+        return "PRODUCTO_NO_ENCONTRADO";
+    }
+
+
