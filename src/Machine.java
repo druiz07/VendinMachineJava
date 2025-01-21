@@ -100,4 +100,39 @@ public class Maquina {
         return "PRODUCTO_NO_ENCONTRADO";
     }
 
+    // Obtener los productos
+    public Producto[][] getProductos() {
+        return productos;
+    }
 
+    public void mostrarProductosPorCategoria(String categoria) {
+        boolean categoriaEncontrada = false;
+        for (Producto[] fila : productos) {
+            for (Producto producto : fila) {
+                if (producto.getCategoria().equalsIgnoreCase(categoria)) {
+                    if (!categoriaEncontrada) {
+                        System.out.println("Productos en la categoría: " + categoria);
+                        categoriaEncontrada = true;
+                    }
+                    System.out.println("- " + producto.getNombre() + " | Precio: " + producto.getPrecio() + "€ | Stock: " + producto.getStockRestante());
+                }
+            }
+        }
+        if (!categoriaEncontrada) {
+            System.out.println("No se encontraron productos en la categoría: " + categoria);
+        }
+    }
+    public void mostrarCategorias() {
+
+        System.out.println();
+        for (int i=0;i<NUM_CATEGORIAS;i++) {
+            System.out.println("- " +  productos[i][0].getCategoria() + " ");
+
+        }
+
+    }
+
+
+
+
+}
