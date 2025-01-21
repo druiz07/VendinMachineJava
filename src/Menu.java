@@ -145,6 +145,49 @@ public class Menu {
 
 
 
+    // Ejecutar menú principal
+    public void ejecutarMenu() {
+        mostrarBienvenida();
 
-   
+        while (true) {
+            System.out.println("\n1. Ver todos los productos");
+            System.out.println("2. Comprar producto");
+            System.out.println("3. Ver todas las Categorias");
+            System.out.println("4 Ver productos por categoria");
+            System.out.print("Seleccione una opción: ");
+
+            if (scanner.hasNextInt()) {
+                int opcion = scanner.nextInt();
+                scanner.nextLine(); // Consumir la línea pendiente
+
+                switch (opcion) {
+                    case 1:
+                        mostrarProductos();
+                        break;
+                    case 2:
+                        procesarCompra();
+                        break;
+                    case 3:
+                        System.out.print("Estas son las categorias existentes");
+                        maquina.mostrarCategorias();
+                        break;
+                    case 4:
+                        System.out.println("Ingrese la categoría a buscar: ");
+                        String categoria = scanner.nextLine();
+                        maquina.mostrarProductosPorCategoria(categoria);
+                        break;
+                    case 5:
+                        System.out.println("Gracias por usar la máquina expendedora. ¡Adiós!");
+                        scanner.close();
+                        return;
+                    default:
+                        System.out.println("Opción no válida. Inténtelo de nuevo.");
+                }
+            } else {
+                System.out.println("Entrada inválida. Por favor, ingrese un número.");
+                scanner.nextLine(); // Consumimos la línea en caso de error de entrada
+            }
+        }
+    }
+
 }
