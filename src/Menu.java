@@ -1,6 +1,7 @@
 import java.util.Scanner;
 import java.lang.InterruptedException;
 
+
 public class Menu {
     private Maquina maquina;
     private Scanner scanner;
@@ -34,7 +35,6 @@ public class Menu {
         }
     }
 
-    // Procesar compra de un producto
     public void procesarCompra() {
         if (usuarioActivo == null) {
             System.out.println("¡Debes iniciar sesión para comprar productos!");
@@ -49,36 +49,57 @@ public class Menu {
             return;
         }
 
-        System.out.print("Ingrese el dinero: ");
-        if (scanner.hasNextDouble()) {
-            double dinero = scanner.nextDouble();
-            scanner.nextLine(); // Consumir la línea pendiente
-            String resultado = maquina.comprarProducto(nombre, dinero);
-            String[] partes = resultado.split(",");
+        // Verificar si el usuario tiene dinero extra
+        double dineroExtra = usuarioActivo.getMoneyExtra(); // Obtenemos el dinero extra disponible
+        double dineroIngresado = 0;
 
-            if (partes[0].equals("COMPRA_EXITOSA")) {
-                System.out.println("¡Compra exitosa! Preparando el producto...");
-                mostrarProductoEnLaMaquina(nombre);
-                System.out.println("\n¡Producto entregado! " + partes[1]);
-                System.out.println("Cambio: " + partes[2] + "€");
+        // Si el dinero extra no es suficiente, pedimos dinero
+        if (dineroExtra == 0) {
+            System.out.print("Ingrese el dinero: ");
+            if (scanner.hasNextDouble()) {
+                dineroIngresado = scanner.nextDouble();
+                scanner.nextLine(); // Consumir la línea pendiente
             } else {
-                switch (partes[0]) {
-                    case "DINERO_INSUFICIENTE":
-                        System.out.println("Dinero insuficiente. Falta: " + partes[1] + "€");
-                        break;
-                    case "PRODUCTO_AGOTADO":
-                        System.out.println("El producto está agotado.");
-                        break;
-                    case "PRODUCTO_NO_ENCONTRADO":
-                        System.out.println("Producto no encontrado.");
-                        break;
-                }
+                System.out.println("Entrada inválida. Por favor, ingrese un valor numérico.");
+                scanner.nextLine(); // Consumimos la línea por si hay entrada inválida
+                return;
             }
+        }
+
+        // Creamos un contenedor para manejar el cambio
+
+        Contenedor contenedor;
+        if (dineroExtra==0)contenedor= new Contenedor(dineroIngresado);
+        else contenedor= new Contenedor(dineroExtra);
+        // Realizamos la compra
+
+        String resultado = maquina.comprarProducto(nombre, contenedor);
+
+        // Procesamos el resultado de la compra
+        String[] partes = resultado.split(",");
+        usuarioActivo.setMoneyExtra(contenedor.valor); // Actualizamos el dinero extra del usuario
+        if (partes[0].equals("COMPRA_EXITOSA")) {
+            usuariosManager.guardarUsuarios();  // Guardamos los usuarios con el dinero extra actualizado
+            System.out.println("¡Compra exitosa! Preparando el producto...");
+            mostrarProductoEnLaMaquina(nombre);
+            System.out.println("\n¡Producto entregado! " + partes[1]);
+            System.out.println("Cambio: " + partes[2] + "€");
         } else {
-            System.out.println("Entrada inválida. Por favor, ingrese un valor numérico.");
-            scanner.nextLine(); // Consumimos la línea por si hay entrada inválida
+            switch (partes[0]) {
+                case "DINERO_INSUFICIENTE":
+                    System.out.println("Dinero insuficiente. Falta: " + partes[1] + "€");
+                    break;
+                case "PRODUCTO_AGOTADO":
+                    System.out.println("El producto está agotado.");
+                    break;
+                case "PRODUCTO_NO_ENCONTRADO":
+                    System.out.println("Producto no encontrado.");
+                    break;
+            }
         }
     }
+
+
 
     // Función para simular la caída del producto en la máquina
     private void mostrarProductoEnLaMaquina(String nombre) {

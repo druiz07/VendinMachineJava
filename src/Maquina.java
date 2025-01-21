@@ -1,3 +1,5 @@
+
+
 public class Maquina {
     private Producto[][] productos;
     private final String[] CATEGORIAS = {
@@ -78,18 +80,23 @@ public class Maquina {
         return false;
     }
 
-    // Intentar comprar un producto
-    public String comprarProducto(String nombre, double dineroIngresado) {
+    public String comprarProducto(String nombre, Contenedor dinero) {
         for (Producto[] fila : productos) {
             for (Producto producto : fila) {
                 if (producto.getNombre().equalsIgnoreCase(nombre)) {
                     if (producto.getStockRestante() > 0) {
-                        if (dineroIngresado >= producto.getPrecio()) {
-                            double cambio = dineroIngresado - producto.getPrecio();
+                        double precio = producto.getPrecio();
+
+
+                        // Caso 1: Si el dinero extra cubre el precio
+                        if (dinero.valor >= precio) {
+                            dinero.valor -= precio;  // Se utiliza solo el dinero extra
                             producto.setStockRestante(producto.getStockRestante() - 1);
-                            return "COMPRA_EXITOSA," + producto.getNombre() + "," + cambio;
-                        } else {
-                            return "DINERO_INSUFICIENTE," + (producto.getPrecio() - dineroIngresado);
+                            return "COMPRA_EXITOSA," + producto.getNombre() + "," + dinero;
+                        }
+                        else {
+                            double falta = precio - dinero.valor;
+                            return "DINERO_INSUFICIENTE," + falta;
                         }
                     } else {
                         return "PRODUCTO_AGOTADO";
@@ -99,6 +106,8 @@ public class Maquina {
         }
         return "PRODUCTO_NO_ENCONTRADO";
     }
+
+
 
     // Obtener los productos
     public Producto[][] getProductos() {

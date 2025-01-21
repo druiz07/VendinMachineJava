@@ -1,16 +1,27 @@
 public class Usuario {
     private String nombreUsuario;
-    private String contrasena;  // La contraseña debería ser encriptada en un proyecto real
+    private String contrasena;
     private String correo;
+    private double moneyExtra;
 
     // Constructor
-    public Usuario(String nombreUsuario, String contrasena, String correo) {
+    public Usuario(String nombreUsuario, String contrasena, String correo, double moneyExtra) {
         this.nombreUsuario = nombreUsuario;
         this.contrasena = contrasena;
         this.correo = correo;
+        this.moneyExtra = moneyExtra;  // Inicializamos moneyExtra
     }
 
     // Getters y Setters
+
+    public double getMoneyExtra() {
+        return moneyExtra;
+    }
+
+    public void setMoneyExtra(double moneyExtra) {
+        this.moneyExtra = moneyExtra;
+    }
+
     public String getNombreUsuario() {
         return nombreUsuario;
     }
@@ -37,6 +48,6 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario: " + nombreUsuario + ", Correo: " + correo;
+        return "Usuario: " + nombreUsuario + ", Correo: " + correo + ", MoneyExtra: " + moneyExtra;
     }
 }

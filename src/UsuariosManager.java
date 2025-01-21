@@ -19,8 +19,12 @@ public class UsuariosManager {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(",");
-                if (datos.length == 3) {
-                    Usuario usuario = new Usuario(datos[0], datos[1], datos[2]);
+                if (datos.length == 4) { // Añadimos un cuarto campo para moneyExtra
+                    String nombreUsuario = datos[0];
+                    String contrasena = datos[1];
+                    String correo = datos[2];
+                    double moneyExtra = Double.parseDouble(datos[3]); // Convertir el moneyExtra a un valor numérico
+                    Usuario usuario = new Usuario(nombreUsuario, contrasena, correo, moneyExtra);
                     usuarios.add(usuario);
                 }
             }
@@ -33,7 +37,7 @@ public class UsuariosManager {
     public void guardarUsuarios() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivoUsuarios))) {
             for (Usuario usuario : usuarios) {
-                bw.write(usuario.getNombreUsuario() + "," + usuario.getContrasena() + "," + usuario.getCorreo());
+                bw.write(usuario.getNombreUsuario() + "," + usuario.getContrasena() + "," + usuario.getCorreo() + "," + usuario.getMoneyExtra());
                 bw.newLine();
             }
         } catch (IOException e) {
@@ -51,8 +55,8 @@ public class UsuariosManager {
             }
         }
 
-        // Crear un nuevo usuario
-        Usuario nuevoUsuario = new Usuario(nombreUsuario, contrasena, correo);
+        // Crear un nuevo usuario con dinero extra inicializado en 0
+        Usuario nuevoUsuario = new Usuario(nombreUsuario, contrasena, correo, 0);
         usuarios.add(nuevoUsuario);
         guardarUsuarios();  // Guardar cambios en el archivo
         System.out.println("Usuario registrado exitosamente.");
