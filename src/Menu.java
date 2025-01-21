@@ -1,14 +1,20 @@
 import java.util.Scanner;
 import java.lang.InterruptedException;
 
-
+/**
+ * Esta clase representa el menú de una máquina expendedora que gestiona la interacción
+ * con los usuarios registrados, permitiendo realizar operaciones como registro, inicio de sesión
+ * y compra de productos.
+ */
 public class Menu {
-    private Maquina maquina;
-    private Scanner scanner;
-    private UsuariosManager usuariosManager;
-    private Usuario usuarioActivo; // Variable para el usuario actualmente autenticado
+    private Maquina maquina;            // Instancia de la máquina expendedora
+    private Scanner scanner;            // Scanner para leer las entradas del usuario
+    private UsuariosManager usuariosManager; // Instancia del gestor de usuarios
+    private Usuario usuarioActivo;      // Usuario actualmente autenticado
 
-    // Constructor
+    /**
+     * Constructor de la clase Menu. Inicializa la máquina expendedora, el scanner y el gestor de usuarios.
+     */
     public Menu() {
         this.maquina = new Maquina();
         this.scanner = new Scanner(System.in);
@@ -16,12 +22,16 @@ public class Menu {
         this.usuarioActivo = null; // Ningún usuario está activo inicialmente
     }
 
-    // Mostrar bienvenida
+    /**
+     * Muestra un mensaje de bienvenida al usuario.
+     */
     public void mostrarBienvenida() {
         System.out.println("¡Bienvenido a la máquina expendedora!");
     }
 
-    // Mostrar productos
+    /**
+     * Muestra todos los productos disponibles en la máquina.
+     */
     public void mostrarProductos() {
         Producto[][] productos = maquina.getProductos();
         System.out.println("Productos disponibles:");
@@ -35,6 +45,10 @@ public class Menu {
         }
     }
 
+    /**
+     * Procesa la compra de un producto por parte del usuario.
+     * Verifica si el usuario tiene suficiente dinero, y si el producto está disponible.
+     */
     public void procesarCompra() {
         if (usuarioActivo == null) {
             System.out.println("¡Debes iniciar sesión para comprar productos!");
@@ -67,17 +81,17 @@ public class Menu {
         }
 
         // Creamos un contenedor para manejar el cambio
-
         Contenedor contenedor;
-        if (dineroExtra==0)contenedor= new Contenedor(dineroIngresado);
-        else contenedor= new Contenedor(dineroExtra);
-        // Realizamos la compra
+        if (dineroExtra == 0) contenedor = new Contenedor(dineroIngresado);
+        else contenedor = new Contenedor(dineroExtra);
 
+        // Realizamos la compra
         String resultado = maquina.comprarProducto(nombre, contenedor);
 
         // Procesamos el resultado de la compra
         String[] partes = resultado.split(",");
         usuarioActivo.setMoneyExtra(contenedor.valor); // Actualizamos el dinero extra del usuario
+
         if (partes[0].equals("COMPRA_EXITOSA")) {
             usuariosManager.guardarUsuarios();  // Guardamos los usuarios con el dinero extra actualizado
             System.out.println("¡Compra exitosa! Preparando el producto...");
@@ -99,9 +113,10 @@ public class Menu {
         }
     }
 
-
-
-    // Función para simular la caída del producto en la máquina
+    /**
+     * Simula la caída del producto dentro de la máquina expendedora y muestra un efecto visual.
+     * @param nombre El nombre del producto que se está entregando.
+     */
     private void mostrarProductoEnLaMaquina(String nombre) {
         String maquina =
                 "+------------------------+\n" +
@@ -163,7 +178,11 @@ public class Menu {
         System.out.println(cajetinConProducto);
     }
 
-    // Función para generar espacios para simular la caída del producto
+    /**
+     * Genera un número específico de espacios en blanco para simular la caída del producto.
+     * @param i El número de espacios a generar.
+     * @return La cadena con los espacios generados.
+     */
     private String generarEspacios(int i) {
         StringBuilder espacios = new StringBuilder();
         for (int j = 0; j < i; j++) {
@@ -172,7 +191,9 @@ public class Menu {
         return espacios.toString();
     }
 
-    // Menú para gestionar usuarios y la máquina expendedora
+    /**
+     * Ejecuta el menú principal que maneja las operaciones de usuarios y la máquina expendedora.
+     */
     public void ejecutarMenu() {
         mostrarBienvenida();
 
@@ -187,7 +208,9 @@ public class Menu {
         }
     }
 
-    // Menú para gestionar usuarios (registro e inicio de sesión)
+    /**
+     * Muestra las opciones disponibles para gestionar usuarios (registro e inicio de sesión).
+     */
     private void mostrarMenuUsuarios() {
         System.out.println("\n1. Registrarse");
         System.out.println("2. Iniciar sesión");
@@ -219,7 +242,9 @@ public class Menu {
         }
     }
 
-    // Registrar un usuario
+    /**
+     * Permite registrar un nuevo usuario.
+     */
     private void registrarUsuario() {
         System.out.print("Ingrese el nombre de usuario: ");
         String nombreUsuario = scanner.nextLine();
@@ -233,7 +258,9 @@ public class Menu {
         }
     }
 
-    // Iniciar sesión
+    /**
+     * Permite a un usuario iniciar sesión.
+     */
     private void iniciarSesion() {
         System.out.print("Ingrese el nombre de usuario: ");
         String nombreUsuario = scanner.nextLine();
@@ -245,7 +272,9 @@ public class Menu {
         }
     }
 
-    // Menú de la máquina expendedora
+    /**
+     * Muestra el menú de la máquina expendedora, con opciones de compra y visualización de productos.
+     */
     private void mostrarMenuMaquina() {
         System.out.println("\n1. Ver todos los productos");
         System.out.println("2. Comprar producto");

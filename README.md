@@ -22,6 +22,7 @@ This project simulates a vending machine with product categories such as drinks,
 - **Menu.java**: Contains the logic to interact with the user, displaying options, reading inputs, and executing actions.
 - **UsuariosManager.java**: Manages the user authentication process, including registering users, logging them in, and keeping track of the active user session.
 - **Usuario.java**: Represents a user, with properties like username, password, and email.
+- **Contenedor.java** Represents a container for using extra money and updating it for each user when a buying operation is done.
 
 ## Requirements
 
@@ -68,7 +69,7 @@ After selecting a category, the user can see all the available products within t
 
 ### 4. **Buy Product**
 The user can select a product and proceed with purchasing it if they have enough money. If the purchase is successful, the product's stock is automatically reduced. If the money is insufficient, the system will show the remaining amount. If the product is out of stock, the user will be informed.
-
+When a user uses its money , if there is extra money from other operation , it will be used (if its enough to buy the product)
 ### 5. **Exit**
 Choosing this option will close the program and terminate the execution.
 
