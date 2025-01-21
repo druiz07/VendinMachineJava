@@ -4,10 +4,12 @@ import java.util.*;
 public class UsuariosManager {
 
     private List<Usuario> usuarios;
+    private Usuario usuarioActivo; // Variable para almacenar al usuario activo
     private final String archivoUsuarios = "usuarios.txt";
 
     public UsuariosManager() {
         usuarios = new ArrayList<>();
+        usuarioActivo = null; // Ningún usuario está activo al inicio
         cargarUsuarios();
     }
 
@@ -62,12 +64,18 @@ public class UsuariosManager {
         for (Usuario usuario : usuarios) {
             if (usuario.getNombreUsuario().equalsIgnoreCase(nombreUsuario) &&
                     usuario.getContrasena().equals(contrasena)) {
+                usuarioActivo = usuario; // Establecer al usuario como activo
                 System.out.println("Inicio de sesión exitoso.");
                 return true;
             }
         }
         System.out.println("Usuario o contraseña incorrectos.");
         return false;
+    }
+
+    // Obtener el usuario activo
+    public Usuario getUsuarioActivo() {
+        return usuarioActivo;
     }
 
     // Mostrar todos los usuarios (esto es solo para pruebas)
