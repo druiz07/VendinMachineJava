@@ -34,15 +34,29 @@ public class Menu {
      */
     public void mostrarProductos() {
         Producto[][] productos = maquina.getProductos();
-        System.out.println("Productos disponibles:");
-        int categoriaIndex = 0;
+        System.out.println("\n==================================");
+        System.out.println("       MÁQUINA EXPENDEDORA       ");
+        System.out.println("==================================");
+
+        int filaNum = 1;
         for (Producto[] fila : productos) {
-            System.out.println("   " + productos[categoriaIndex][0].getCategoria() + "  ");
+            System.out.println("\n--- " + fila[0].getCategoria().toUpperCase() + " ---");
+            System.out.println("+----+----------------+--------+------+------+");
+            System.out.println("| #  | Producto       | Precio | Stock|  \"  |");
+            System.out.println("+----+----------------+--------+------+------+");
+            int colNum = 1;
             for (Producto producto : fila) {
-                System.out.println("- " + producto.getNombre() + " | Precio: " + producto.getPrecio() + "€ | Stock: " + producto.getStockRestante());
+                System.out.printf("| %d%d | %-14s | %6.2f€ | %4d | [ ]  |",
+                        filaNum, colNum, producto.getNombre(), producto.getPrecio(), producto.getStockRestante());
+                System.out.println();  // Imprime una nueva línea
+                colNum++;
             }
-            ++categoriaIndex;
+
+
+            System.out.println("+----+----------------+--------+------+------+");
+            filaNum++;
         }
+        System.out.println("\nSeleccione el producto ingresando su número de fila y columna (ej. 12 para fila 1, columna 2).");
     }
 
     /**
